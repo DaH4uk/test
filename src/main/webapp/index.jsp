@@ -3,21 +3,19 @@
 <head>
     <title>File upload form</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+    <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
 
 
-    <form method="POST" action="upload" enctype="multipart/form-data" >
-        File:
-        <input type="file" name="file" id="file" /> <br/>
-        Destination:
-        <input type="text" value="/tmp" name="destination"/>
-        </br>
-        <input type="submit" value="Upload" name="upload" id="upload" />
-    </form>
+<div id="fileuploader">Upload</div>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<div id="fileInfo"></div>
+
+
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>
