@@ -15,7 +15,7 @@ $(function () {
             success: function (result) {
                 //do something
                 var list = JSON.parse(result).list;
-                $('#fileInfo').reset;
+                $('#fileInfo').empty();
                 for (var i = 0; i < list.length; i++) {
                     var url = 'download?filename='+ list[i].filename;
                     var filename = list[i].filename;
