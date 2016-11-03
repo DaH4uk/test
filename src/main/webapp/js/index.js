@@ -44,18 +44,7 @@ $(function () {
         showDone: "true",
         showFileSize: "false",
         onSuccess: function (files, data, xhr, pd) {
-            var url = 'download?filename='+ files;
-            var filename = files;
-            $('#fileInfo').append('<p>' +
-                '<div class="ajax-file-upload-container">' +
-                '<div class="ajax-file-upload-statusbar" style="width: 400px;"><img class="ajax-file-upload-preview" style="width: 100%; height: auto; display: none;">' +
-                '<div class="ajax-file-upload-filename">'+ filename+'</div>' +
-                '<div class="ajax-file-upload-progress" style=""><div class="ajax-file-upload-bar" style="width: 100%;"></div>' +
-                '</div>' +
-                '<div class="nin"><a target="_blank" href="'+url+'">Download </a> </div>' +
-                '</div>' +
-                '</p>');
-
+            update();
         }
     });
 });
