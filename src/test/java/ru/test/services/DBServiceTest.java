@@ -7,12 +7,17 @@ import ru.test.entities.FileEntity;
 import static org.junit.Assert.*;
 
 /**
- * Created by turov on 02.11.2016.
+ * Автор: Туров Данил
+ * Пара тестов, для продключения в БД.
+ * 02.11.2016.
  */
 public class DBServiceTest {
     FileEntityDAO fileEntityDAO = new FileEntityDAO();
 
-
+    /**
+     * Проверка возможности записи в БД
+     * @throws Exception
+     */
     @Test
     public void writeFile() throws Exception {
         FileEntity fileEntity = new FileEntity();
@@ -24,7 +29,11 @@ public class DBServiceTest {
         fileEntityDAO.writeFile(fileEntity);
     }
 
-    @org.junit.Test
+    /**
+     * Проверка позможности получения файлов из БД
+     * @throws Exception
+     */
+    @Test
     public void getAllFiles() throws Exception {
         fileEntityDAO.getAllFiles();
     }

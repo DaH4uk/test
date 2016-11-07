@@ -3,49 +3,64 @@ package ru.test.services;
 import java.sql.*;
 
 /**
- * Created by turov on 02.11.2016.
+ * Автор: Туров Данил
+ * Скрывает реализацию доступа к БД
+ * 02.11.2016.
  */
 public class DBService {
-    // JDBC driver name and database URL
+    // JDBC драйвер
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
+    //БД URL
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
 
-    //  Database credentials
+    //логин/пароль для доступа к БД
     private static final String USER = "postgres";
     private static final String PASS = "599713";
-
+    //Коннекшен к БД
     private static Connection connection;
 
+    /**
+     * Получаем подключение к БД
+     * @return connection к БД
+     */
     private static Connection getConnection() {
         if (connection == null) {
             try {
-                //STEP 2: Register JDBC driver
+                //Регистрация JDBC драйвера
                 Class.forName(JDBC_DRIVER);
-                System.out.println("Connecting to database...");
+                System.out.println("Подключение к БД...");
 
-                //STEP 3: Open a connection
+                //Открываем коннекшен
                 connection = DriverManager.getConnection(DB_URL, USER, PASS);
             } catch (ClassNotFoundException e) {
-                System.out.println("Can't find the driver.");
+                System.out.println("Не могу найти драйвер.");
             } catch (SQLException e) {
-                System.out.println("Can't connect to the database.");
+                System.out.println("Не могу подключиться в БД.");
             }
 
         }
         return connection;
     }
 
+    /**
+     * Получение стейтмента
+     * @return statement
+     */
     public static Statement getStatement() {
-        System.out.println("Creating statement...");
+        System.out.println("Создание стейтмента...");
         Statement statement = null;
         try {
             statement = getConnection().createStatement();
         } catch (SQLException e) {
-            System.out.println("Can't create statement.");
+            System.out.println("Не могу создать стейтмент.");
         }
         return statement;
     }
 
+    /**
+     * Закрывает подключение к БД
+     * @return boolean, закрыто или нет подключение.
+     */
     public boolean closeConnection() {
         try {
             connection.close();

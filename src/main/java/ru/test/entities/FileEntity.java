@@ -1,11 +1,22 @@
 package ru.test.entities;
 
 /**
- * Created by turov on 02.11.2016.
+ * Автор: Туров Данил
+ * Сущность файла
+ * 02.11.2016.
  */
 public class FileEntity {
+    /**
+     * ID файла
+     */
     Integer fileId;
+    /**
+     * Имя файла
+     */
     String filename;
+    /**
+     * URL - путь к файлу
+     */
     String url;
 
     public Integer getFileId() {

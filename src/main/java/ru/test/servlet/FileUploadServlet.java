@@ -14,72 +14,73 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 /**
- * Created by turov on 01.11.2016.
+ * Автор: Туров Данил
+ * Отвечает за загрузку файлов на сервер
+ * Обрабатывает PUT запросы по url: /upload
+ * 01.11.2016.
  */
 @WebServlet(name = "FileUploadServlet", urlPatterns = {"/upload"})
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet {
+    private FileEntityDAO fileEntityDAO = new FileEntityDAO();
 
 
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
-
         // Create path components to save the file
-        final Part filePart = request.getPart("file");
+        Part filePart = null;
+        PrintWriter writer = null;
+        try {
+            filePart = request.getPart("file"); //Читаем параметр file
+            writer = response.getWriter(); //Кладем write в переменную writer
+        } catch (Exception e) {
+            writer.println("Не могу прочитать параметр file.");
+            writer.println("<br/> ERROR: " + e.getMessage());
+        }
         final String fileName = getFileName(filePart);
 
-        OutputStream out = null;
-        InputStream filecontent = null;
-        final PrintWriter writer = response.getWriter();
 
-        try {
-            File file = new File(fileName);
-            out = new FileOutputStream(file);
-            filecontent = filePart.getInputStream();
+        File file = new File(fileName);             //создаем объект файла
 
-            int read = 0;
-            final byte[] bytes = new byte[1024];
+        try (OutputStream out = new FileOutputStream(file);//создаем байтовый поток в файл
+             InputStream filecontent = filePart.getInputStream()) { //берем поток из filepart
 
-            while ((read = filecontent.read(bytes)) != -1) {
+
+            int read = 0; //создаем переменную для чтения
+            final byte[] bytes = new byte[1024]; //создаем байтовый массив
+
+            while ((read = filecontent.read(bytes)) != -1) { //пока входной поток не вернет значение -1 (конец файла) читаем файл
                 out.write(bytes, 0, read);
             }
             writer.println("New file " + fileName + " created.");
 
-        } catch (FileNotFoundException fne) {
+        } catch (FileNotFoundException fne) { //естественно обрабатываем exception
             writer.println("You either did not specify a file to upload or are "
                     + "trying to upload a file to a protected or nonexistent "
                     + "location.");
             writer.println("<br/> ERROR: " + fne.getMessage());
             fne.printStackTrace();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             writer.println("Не могу создать дирректорию.");
             writer.println("<br/> ERROR: " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-            if (filecontent != null) {
-                filecontent.close();
-            }
-            if (writer != null) {
-                writer.close();
-            }
         }
 
-        FileEntity fileEntity = new FileEntity();
-        fileEntity.setFilename(fileName);
+        FileEntity fileEntity = new FileEntity(); //Создаем сущность файла для БД
+        fileEntity.setFilename(fileName);   //задаем поля
         fileEntity.setUrl("/upload");
 
-        FileEntityDAO fileEntityDAO = new FileEntityDAO();
-        fileEntityDAO.writeFile(fileEntity);
+        fileEntityDAO.writeFile(fileEntity); //пишем файл
     }
 
+    /**
+     * Метод для получения имени файла
+     *
+     * @param part объект, содержащий информацию о файле
+     * @return имя файла
+     */
     private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
                 return content.substring(

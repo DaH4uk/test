@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by turov on 02.11.2016.
+ * Автор: Туров Данил
+ * Отдает список файлов на фронтенд
+ * Генерирует JSON файл
+ * Обрабатывает GET запросы по url: /fileList
+ * 02.11.2016.
  */
 @WebServlet(name = "FileInfoServlet", urlPatterns = {"/fileList"})
 @MultipartConfig
@@ -24,9 +28,11 @@ public class FileInfoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        final PrintWriter writer = response.getWriter();
-        Set<FileEntity> fileList = fileEntityDAO.getAllFiles();
-        StringBuilder stringBuilder = new StringBuilder();
+
+        final PrintWriter writer = response.getWriter();    //берем врайтер из response
+        Set<FileEntity> fileList = fileEntityDAO.getAllFiles(); //получаем из БД список всех файлов
+        StringBuilder stringBuilder = new StringBuilder();  //Создаем стрингбилдер, чтобы не переполнять память объектами string
+        //Генерируем JSON
         stringBuilder.append("{\"list\": [");
         for (FileEntity o :fileList) {
             stringBuilder.append("{");
@@ -35,8 +41,8 @@ public class FileInfoServlet extends HttpServlet {
             stringBuilder.append("}");
             stringBuilder.append(",");
         }
-        String string = stringBuilder.toString();
-        writer.write(string.substring(0,string.length()-1));
+        String string = stringBuilder.toString();   //Создаем строку
+        writer.write(string.substring(0,string.length()-1));    //убираем последнюю запятую
         writer.write("]}");
 
         writer.close();

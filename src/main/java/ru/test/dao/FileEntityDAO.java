@@ -10,14 +10,21 @@ import java.util.Set;
 import static ru.test.services.DBService.getStatement;
 
 /**
- * Created by turov on 02.11.2016.
+ * Автор: Туров Данил
+ * Скрывает методы доступа к сущностям в БД
+ * 02.11.2016.
  */
 public class FileEntityDAO {
+    /**
+     * Получить список всех файлов
+     * @return Set файлов
+     */
     public Set<FileEntity> getAllFiles() {
         Set<FileEntity> fileEntities = new LinkedHashSet<FileEntity>();
         try {
-            ResultSet result = getStatement().executeQuery("SELECT file_id, filename, url FROM my_schema.my_table;");
+            ResultSet result = getStatement().executeQuery("SELECT file_id, filename, url FROM my_schema.my_table;");   //Сам запрос к БД
 
+            //Создаем сущности, пока они есть
             while (result.next()) {
                 System.out.println(result.getInt("file_id") + " "+
                         result.getString("filename") + " " +
@@ -34,18 +41,22 @@ public class FileEntityDAO {
             result.close();
 
         } catch (SQLException e) {
-            System.out.println("File entities getting error.");
+            System.out.println("Не удалось получить сущность из БД.");
             e.printStackTrace();
         }
         return fileEntities;
     }
 
+    /**
+     * Запись сущности файла в БД
+     * @param fileEntity сущность файла
+     */
     public void writeFile(FileEntity fileEntity){
         try {
-            getStatement().executeUpdate("INSERT INTO my_schema.my_table (filename, url) VALUES ('"+
+            getStatement().executeUpdate("INSERT INTO my_schema.my_table (filename, url) VALUES ('"+        //Сам запрос
                     fileEntity.getFilename()+"', '"+fileEntity.getUrl()+"');");
         } catch (SQLException e) {
-            System.out.println("Can't add file in DB.");
+            System.out.println("Не могу записать файл в БД.");
             e.printStackTrace();
         }
     }
