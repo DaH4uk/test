@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setCharacterEncoding("UTF-8");
+    response.setCharacterEncoding("UTF-8");
+%>
+
 <html>
 <head>
     <title>File upload form</title>
@@ -14,7 +18,7 @@
 <div id="fileInfo"></div>
 
 
-<script src="js/jquery-3.1.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 </body>
